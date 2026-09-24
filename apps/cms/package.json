@@ -1,0 +1,25 @@
+{
+  "name": "@thrinxs/cms",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": { "dev": "next dev -p 3001", "build": "next build", "start": "next start", "lint": "next lint" },
+  "dependencies": {
+    "next": "^14.2.0", "react": "^18.3.0", "react-dom": "^18.3.0",
+    "@thrinxs/ui":              "workspace:*",
+    "@thrinxs/types":           "workspace:*",
+    "@thrinxs/database":        "workspace:*",
+    "@thrinxs/auth":            "workspace:*",
+    "@thrinxs/image-processor": "workspace:*",
+    "@thrinxs/email":           "workspace:*",
+    "react-hook-form":          "^7.52.0",
+    "zod":                      "^3.23.8",
+    "@hookform/resolvers":      "^3.6.0",
+    "zustand":                  "^4.5.0",
+    "framer-motion":            "^11.2.0",
+    "lucide-react":             "^0.390.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0", "@types/react": "^18.3.0", "@types/react-dom": "^18.3.0",
+    "typescript": "^5.4.5", "tailwindcss": "^3.4.0", "postcss": "^8.4.38", "autoprefixer": "^10.4.19"
+  }
+}

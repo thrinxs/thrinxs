@@ -1,0 +1,7 @@
+{
+  "name": "@thrinxs/config",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./tailwind.config.ts",
+  "devDependencies": { "tailwindcss": "^3.4.0" }
+}

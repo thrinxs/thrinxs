@@ -1,0 +1,199 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id           String       @id @default(cuid())
+  email        String       @unique
+  name         String
+  passwordHash String?
+  avatarUrl    String?
+  platformRole PlatformRole @default(CLIENT)
+  plan         PlanTier     @default(FREE)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  orgs           OrgMember[]
+  apiKeys        ApiKey[]
+  entriesCreated Entry[]     @relation("EntryCreatedBy")
+  mediaUploads   MediaFile[]
+  activityLogs   ActivityLog[]
+}
+
+model Organization {
+  id        String      @id @default(cuid())
+  name      String
+  slug      String      @unique
+  plan      PlanTier    @default(FREE)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  members   OrgMember[]
+  projects  Project[]
+}
+
+model OrgMember {
+  id     String        @id @default(cuid())
+  org    Organization  @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  orgId  String
+  user   User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  role   OrgMemberRole @default(EDITOR)
+  @@unique([orgId, userId])
+}
+
+model ApiKey {
+  id          String    @id @default(cuid())
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  keyHash     String    @unique
+  label       String
+  permissions Json      @default("[]")
+  lastUsedAt  DateTime?
+  createdAt   DateTime  @default(now())
+}
+
+model Project {
+  id        String        @id @default(cuid())
+  org       Organization  @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  orgId     String
+  name      String
+  slug      String
+  settings  Json          @default("{}")
+  status    ProjectStatus @default(BUILDING)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  collections  Collection[]
+  pages        Page[]
+  media        MediaFile[]
+  forms        Form[]
+  webhooks     Webhook[]
+  activityLogs ActivityLog[]
+  @@unique([orgId, slug])
+}
+
+model Collection {
+  id           String   @id @default(cuid())
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId    String
+  name         String
+  slug         String
+  fieldsSchema Json
+  isSingleton  Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  entries      Entry[]
+  @@unique([projectId, slug])
+}
+
+model Entry {
+  id           String        @id @default(cuid())
+  collection   Collection    @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  collectionId String
+  data         Json
+  status       ContentStatus @default(DRAFT)
+  publishedAt  DateTime?
+  createdBy    User          @relation("EntryCreatedBy", fields: [createdById], references: [id])
+  createdById  String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  versions     EntryVersion[]
+}
+
+model EntryVersion {
+  id            String   @id @default(cuid())
+  entry         Entry    @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  entryId       String
+  data          Json
+  versionNumber Int
+  createdAt     DateTime @default(now())
+}
+
+model Page {
+  id            String        @id @default(cuid())
+  project       Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId     String
+  title         String
+  slug          String
+  contentBlocks Json          @default("[]")
+  seo           Json          @default("{}")
+  status        ContentStatus @default(DRAFT)
+  sortOrder     Int           @default(0)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  @@unique([projectId, slug])
+}
+
+model MediaFile {
+  id           String   @id @default(cuid())
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId    String
+  uploadedBy   User     @relation(fields: [uploadedById], references: [id])
+  uploadedById String
+  originalUrl  String
+  processedUrl String
+  thumbnailUrl String?
+  format       String
+  width        Int?
+  height       Int?
+  sizeKb       Float
+  altText      String?
+  folder       String?
+  uploadedAt   DateTime @default(now())
+}
+
+model Form {
+  id          String          @id @default(cuid())
+  project     Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId   String
+  name        String
+  fields      Json            @default("[]")
+  settings    Json            @default("{}")
+  createdAt   DateTime        @default(now())
+  submissions FormSubmission[]
+}
+
+model FormSubmission {
+  id          String   @id @default(cuid())
+  form        Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  formId      String
+  data        Json
+  isRead      Boolean  @default(false)
+  submittedAt DateTime @default(now())
+}
+
+model Webhook {
+  id        String   @id @default(cuid())
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+  url       String
+  events    String[]
+  secret    String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model ActivityLog {
+  id         String   @id @default(cuid())
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId  String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  action     String
+  entityType String
+  entityId   String
+  diff       Json?
+  createdAt  DateTime @default(now())
+}
+
+enum PlatformRole  { THRINXS_ADMIN CLIENT AFFILIATE }
+enum OrgMemberRole { OWNER EDITOR VIEWER }
+enum PlanTier      { FREE STARTER PRO AGENCY ENTERPRISE }
+enum ProjectStatus { BUILDING LIVE PAUSED SUSPENDED }
+enum ContentStatus { DRAFT PUBLISHED }

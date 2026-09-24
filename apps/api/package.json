@@ -1,0 +1,13 @@
+{
+  "name": "@thrinxs/api",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": { "dev": "next dev -p 3002", "build": "next build", "start": "next start", "lint": "next lint" },
+  "dependencies": {
+    "next": "^14.2.0", "react": "^18.3.0", "react-dom": "^18.3.0",
+    "@thrinxs/database":        "workspace:*",
+    "@thrinxs/types":           "workspace:*",
+    "@thrinxs/image-processor": "workspace:*"
+  },
+  "devDependencies": { "@types/node": "^20.14.0", "@types/react": "^18.3.0", "typescript": "^5.4.5" }
+}

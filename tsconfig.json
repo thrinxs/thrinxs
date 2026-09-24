@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target":                        "ES2020",
+    "lib":                           ["ES2020", "DOM", "DOM.Iterable"],
+    "module":                        "CommonJS",
+    "moduleResolution":              "bundler",
+    "jsx":                           "preserve",
+    "strict":                        true,
+    "esModuleInterop":               true,
+    "skipLibCheck":                  true,
+    "resolveJsonModule":             true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental":                   true
+  },
+  "exclude": ["node_modules"]
+}

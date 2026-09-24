@@ -1,0 +1,12 @@
+# Getting Started
+
+Install the SDK:
+
+    npm install @thrinxs/cms-client
+
+Quick start:
+
+    import { ThrinxsClient } from '@thrinxs/cms-client'
+
+    const cms = new ThrinxsClient({ projectId: 'your-id', apiKey: 'your-key' })
+    const posts = await cms.collection('blog-posts').getAll()
