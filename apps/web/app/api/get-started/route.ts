@@ -1,31 +1,27 @@
-import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
-import { prisma } from "@/lib/prisma";
+import { NextRequest, NextResponse } from "next/server"
+import { Resend } from "resend"
+import { dbInsert } from "@/lib/supabase"
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { name, email, phone, country, company, services, notes, refCode, region } = body;
+    const body = await req.json()
+    const { name, email, phone, country, company, services, notes, refCode, region } = body
 
-    await prisma.getStartedSubmission.create({
-      data: {
-        name,
-        email,
-        phone,
-        country: country || null,
-        company: company || null,
-        services: JSON.stringify(services || []),
-        notes: notes || null,
-        refCode: refCode || null,
-        region: region || "intl",
-      },
-    });
+    await dbInsert("get_started_submissions", {
+      name, email, phone,
+      country: country || null,
+      company: company || null,
+      services: JSON.stringify(services || []),
+      notes: notes || null,
+      ref_code: refCode || null,
+      region: region || "intl",
+    })
 
     const serviceList = Array.isArray(services)
       ? services.map((s: { service: string; option: string }) => `${s.service} — ${s.option}`).join("<br/>")
-      : "None selected";
+      : "None selected"
 
     await resend.emails.send({
       from: "Thrinxs Website <no-reply@thrinxs.com.ng>",
@@ -41,7 +37,7 @@ export async function POST(req: NextRequest) {
         <p><strong>Ref Code:</strong> ${refCode || "None"}</p>
         <p><strong>Services:</strong><br/>${serviceList}</p>
         <p><strong>Notes:</strong> ${notes || "None"}</p>`,
-    }).catch(() => {});
+    }).catch(() => {})
 
     await resend.emails.send({
       from: "Thrinxs <no-reply@thrinxs.com.ng>",
@@ -51,11 +47,11 @@ export async function POST(req: NextRequest) {
         <p>Thank you for reaching out to Thrinxs. We have received your project enquiry and our team will be in touch within 1 business day.</p>
         <p>If you have any urgent questions, email us at info@thrinxs.com.ng or WhatsApp +234 903 344 0966.</p>
         <p>The Thrinxs Team</p>`,
-    }).catch(() => {});
+    }).catch(() => {})
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true })
   } catch (err) {
-    console.error("Get started route error:", err);
-    return NextResponse.json({ error: "Failed to submit" }, { status: 500 });
+    console.error("Get started route error:", err)
+    return NextResponse.json({ error: "Failed to submit" }, { status: 500 })
   }
 }

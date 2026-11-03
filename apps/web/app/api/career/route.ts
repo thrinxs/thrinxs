@@ -1,17 +1,17 @@
-import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
-import { prisma } from "@/lib/prisma";
+import { NextRequest, NextResponse } from "next/server"
+import { Resend } from "resend"
+import { dbInsert } from "@/lib/supabase"
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { name, email, phone, level, message } = body;
+    const body = await req.json()
+    const { name, email, phone, level, message } = body
 
-    await prisma.careerApplication.create({
-      data: { name, email, phone, level, message },
-    });
+    await dbInsert("career_applications", {
+      name, email, phone, level, message,
+    })
 
     await resend.emails.send({
       from: "Thrinxs Website <no-reply@thrinxs.com.ng>",
@@ -23,11 +23,11 @@ export async function POST(req: NextRequest) {
         <p><strong>Phone:</strong> ${phone}</p>
         <p><strong>Level:</strong> ${level}</p>
         <p><strong>Message:</strong></p><p>${message}</p>`,
-    }).catch(() => {});
+    }).catch(() => {})
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true })
   } catch (err) {
-    console.error("Career route error:", err);
-    return NextResponse.json({ error: "Failed to submit" }, { status: 500 });
+    console.error("Career route error:", err)
+    return NextResponse.json({ error: "Failed to submit" }, { status: 500 })
   }
 }
