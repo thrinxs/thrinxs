@@ -1,23 +1,44 @@
+import Navbar from '@/components/navbar'
+import Hero from '@/components/home/hero'
+import ServicesSection from '@/components/home/services-section'
+import WhyUs from '@/components/home/why-us'
+import PricingSnapshot from '@/components/home/pricing-snapshot'
+import CaseStudy from '@/components/home/case-study'
+import SalesRepBanner from '@/components/home/sales-rep-banner'
+import FinalCta from '@/components/home/final-cta'
+import Footer from '@/components/footer'
+
+
+
+export const metadata = {
+  title: "Thrinxs — We Build, Grow & Manage Your Digital Presence",
+  description: "Thrinxs is a full-service digital agency based in Port Harcourt, Nigeria. We build websites, SaaS platforms, and digital growth systems for businesses worldwide.",
+  metadataBase: new URL("https://thrinxs.com.ng"),
+  openGraph: {
+    title: "Thrinxs — We Build, Grow & Manage Your Digital Presence",
+    description: "Thrinxs is a full-service digital agency based in Port Harcourt, Nigeria. We build websites, SaaS platforms, and digital growth systems for businesses worldwide.",
+    url: "https://thrinxs.com.ng",
+    siteName: "Thrinxs",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Thrinxs — We Build, Grow & Manage Your Digital Presence",
+    description: "Thrinxs is a full-service digital agency based in Port Harcourt, Nigeria. We build websites, SaaS platforms, and digital growth systems for businesses worldwide.",
+  },
+};
 export default function HomePage() {
   return (
     <main>
-      <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-950 to-brand-700">
-        <div className="text-center text-white px-4">
-          <h1 className="text-6xl font-bold mb-4 tracking-tight">Thrinxs</h1>
-          <p className="text-xl text-brand-200 mb-8">Technology and Digital Solutions</p>
-          <div className="flex gap-4 justify-center flex-wrap">
-            <a href="http://localhost:3001"
-               className="bg-white text-brand-700 font-semibold px-6 py-3 rounded-lg hover:bg-brand-50 transition-colors">
-              Try Thrinxs CMS
-            </a>
-            <a href="#contact"
-               className="border border-white text-white font-semibold px-6 py-3 rounded-lg hover:bg-white/10 transition-colors">
-              Contact Us
-            </a>
-          </div>
-          <p className="mt-12 text-brand-400 text-sm">Full website coming soon...</p>
-        </div>
-      </section>
+      <Navbar />
+      <Hero />
+      <ServicesSection />
+      <WhyUs />
+      <PricingSnapshot />
+      <CaseStudy />
+      <SalesRepBanner />
+      <FinalCta />
+      <Footer />
     </main>
   )
 }

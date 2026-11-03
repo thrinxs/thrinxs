@@ -3,24 +3,29 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "build":      "turbo build",
-    "dev":        "turbo dev",
-    "lint":       "turbo lint",
-    "format":     "turbo format",
-    "db:generate":"turbo db:generate",
-    "db:push":    "turbo db:push",
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "format": "turbo format",
+    "db:generate": "turbo db:generate",
+    "db:push": "turbo db:push",
     "db:migrate": "turbo db:migrate",
-    "db:studio":  "turbo db:studio"
+    "db:studio": "turbo db:studio"
   },
   "devDependencies": {
-    "turbo":      "latest",
+    "turbo": "latest",
     "typescript": "^5.4.5",
-    "prettier":   "^3.3.0",
-    "eslint":     "^8.57.0"
+    "prettier": "^3.3.0",
+    "eslint": "^8.57.0"
   },
   "engines": {
     "node": ">=20.0.0",
     "pnpm": ">=9.0.0"
   },
-  "packageManager": "pnpm@9.0.0"
+  "packageManager": "pnpm@9.0.0",
+  "pnpm": {
+    "overrides": {
+      "esbuild": "0.19.12"
+    }
+  }
 }
