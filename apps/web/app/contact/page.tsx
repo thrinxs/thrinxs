@@ -1,13 +1,6 @@
 import ContactPage from "@/components/contact/contact-page"
 import type { Metadata } from "next"
 
-export const metadata: Metadata = {
-  title: "Contact Us | Thrinxs",
-  description: "Get in touch with the Thrinxs team. We're ready to help you build, grow, and manage your digital presence.",
-}
-
-
-
 export const metadata = {
   title: "Contact Us — Thrinxs",
   description: "Get in touch with the Thrinxs team. Based in Port Harcourt, Nigeria, working with clients globally. WhatsApp, email, or fill out the form.",
