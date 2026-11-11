@@ -92,7 +92,7 @@ export default function AboutPage() {
             {TEAM.map(member => (
               <div key={member.name} style={{ background: "#111", border: "1px solid #1f1f1f", borderRadius: 16, overflow: "hidden" }}>
                 <div style={{ background: "#0d0d0d", padding: "40px 0", display: "flex", justifyContent: "center", borderBottom: "1px solid #1a1a1a" }}>
-                  <div style={{ width: 180, height: 180, borderRadius: "50%", overflow: "hidden", border: "3px solid #f59e0b", position: "relative" }}>
+                  <div style={{ width: 270, height: 270, borderRadius: "50%", overflow: "hidden", border: "3px solid #f59e0b", position: "relative" }}>
                     <img src={member.avatar} alt={member.name} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top", borderRadius: "50%" }} />
                   </div>
                 </div>
